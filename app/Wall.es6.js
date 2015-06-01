@@ -12,9 +12,12 @@ class Wall {
         this.appendImages(this.imagesNumber);
     }    
     appendImages(number) {
+        var url = 'http://placeskull.com/950/200?';
         for(var i = 0; i < number; i++) {
-            let d = document.createElement('DIV');
+            let d = document.createElement('div');
+            d.style.backgroundImage = 'url(' + url + Date().now +')';
             this.wraper.appendChild(d);
+            
         } 
     }
 }

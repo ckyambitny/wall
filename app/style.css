@@ -11,8 +11,6 @@
 
 
 .wraper > div  {
-    position: relative;
-    display: inline-block;
     margin-top: 5px;
     margin-left: 5px;
     margin-right: 5px;
@@ -20,4 +18,5 @@
     height: 200px;
     width: 950px;
     background-color: #00A5FF;
+    float: left;
 }
