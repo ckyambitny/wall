@@ -2,15 +2,16 @@
     margin: 0;
 }
 
-.wraper {
+.wrapper {
     margin-top: 0;
     background-color: #A8A8A8;
     margin: auto;
     position: relative;
+    width: 960px;
 }
 
 
-.wraper > div  {
+.wrapper > div  {
     margin-top: 5px;
     margin-left: 5px;
     margin-right: 5px;

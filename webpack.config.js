@@ -1,7 +1,7 @@
 module.exports = {
-    entry: './app/main.es6.js',
+    entry: './app/scripts/main.es6.js',
     output: {
-        filename: './app/bundle.js'
+        filename: './app/dist/bundle.js'
     },
     module: {
             loaders: [
@@ -9,4 +9,5 @@ module.exports = {
                 { test: /\.scss/, loader: 'style-loader!css-loader!sass-loader' }
             ]
     },
-};    
+    devtool: '#cheap-module-source-map'
+};
