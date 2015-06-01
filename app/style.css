@@ -3,16 +3,17 @@
 }
 
 .wraper {
-    margin-top: 0px;
+    margin-top: 0;
     background-color: #A8A8A8;
     margin: auto;
     position: relative;
 }
 
 
-.wraper > div {
+.wraper > div  {
     position: relative;
-    top: 5px;
+    display: inline-block;
+    margin-top: 5px;
     margin-left: 5px;
     margin-right: 5px;
     margin-bottom: 5px;

@@ -3,7 +3,7 @@
 class Wall {
     constructor() {
         this.height = window.innerHeight;
-        this.imagesNumber = Math.floor(this.height / 200) +1; 
+        this.imagesNumber = Math.floor(this.height / 210) +1; 
         this.wraper = document.querySelector('.wraper');
         this.wraper.style.width = '960px';
         this.startHeight = this.imagesNumber * 210 + 'px';
