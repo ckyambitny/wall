@@ -44,29 +44,31 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var _WallEs6 = __webpack_require__(1);
+	var Wall = _interopRequire(__webpack_require__(1));
 
-	var _WallEs62 = _interopRequireDefault(_WallEs6);
-
-	new _WallEs62['default']();
+	new Wall();
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
 	var Wall = function Wall() {
 	    _classCallCheck(this, Wall);
 
 	    this.height = window.innerHeight;
 	    this.imageNumber = Math.floor(this.height / 200) + 1;
+	    this.wraper = document.querySelector(".wraper");
+	    this.wraper.style.width = "960px";
+	    this.startHeight = this.imageNumber * 210 + "px";
+	    this.wraper.style.height = this.startHeight;
 	    console.log(this.imageNumber);
 	};
 
