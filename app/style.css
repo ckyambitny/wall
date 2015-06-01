@@ -1,17 +1,21 @@
 * {
     margin: 0;
-    box-sizing: border-box;
 }
 
-div {
+.wraper {
+    margin-top: 0px;
     background-color: #A8A8A8;
     margin: auto;
+    position: relative;
 }
 
-div > div {
-    margin-top: 5px;
+
+.wraper > div {
+    position: relative;
+    top: 5px;
     margin-left: 5px;
     margin-right: 5px;
+    margin-bottom: 5px;
     height: 200px;
     width: 950px;
     background-color: #00A5FF;
