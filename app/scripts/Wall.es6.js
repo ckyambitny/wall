@@ -8,7 +8,7 @@ class Wall {
         let windowHeight = window.innerHeight;
         let imagesNumber = Math.floor(windowHeight / 210) + 1;
         this.wrapper = document.querySelector('.wrapper');
-        
+        this.posts =[];
         // Add images to page.
         this.appendPosts(imagesNumber);
 
@@ -36,18 +36,31 @@ class Wall {
             this.appendPost();
         } 
     }
-
+    
+    // TODO: try to implement for of
     addListener(el) {
+        
         for (let i = 0; i < el.length ; i++ ) {
-            el[i].addEventListener('keypress', function (e) {
+            let input = el[i].lastElementChild.lastElementChild;
+            //console.log(input);
+            let comments = [];
+            input.addEventListener('keypress', function (e) {
                 if ( e.keyCode == '13') {
-                    if ( el[i].value.trim().length > 0 ) {
-                        console.log(JSON.stringify(el[i].value.trim()));                   
+                    if ( input.value.trim().length > 0 ) {
+                        //comments.push(JSON.stringify(el[i].value.trim()));
+                        //document.querySelector()     
+                        //console.log(JSON.stringify(input.value));                   
+                        //console.log(el[i]);
+                        comments.push(input.value);
+                        input.value ='';
+                        console.log(comments);
+                        
                     }   
                 }                    
             });
         }      
-    }    
+    }
+        
     appendPost() {
         console.log('appendPost');
         let u = 'http://placeskull.com/950/200';
@@ -55,7 +68,7 @@ class Wall {
         let context = {url: src};
         let adding = template(context) + '';
         this.wrapper.innerHTML +=  adding;
-        let inputBox = document.querySelectorAll('.form-control');
+        let inputBox = document.querySelectorAll('.post');
         this.addListener(inputBox);
     }
 }
