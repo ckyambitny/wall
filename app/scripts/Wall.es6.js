@@ -53,8 +53,8 @@ class Wall {
         let u = 'http://placeskull.com/950/200';
         let src = u + '?' + Math.random();
         let context = {url: src};
-        let adding = template(context);// + '';
-        this.wrapper.innerHTML += '' +  adding;
+        let adding = template(context) + '';
+        this.wrapper.innerHTML +=  adding;
         let inputBox = document.querySelectorAll('.form-control');
         this.addListener(inputBox);
     }
