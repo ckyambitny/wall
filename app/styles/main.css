@@ -3,20 +3,22 @@
 }
 
 .wrapper {
-    margin-top: 0;
     background-color: #A8A8A8;
-    margin: auto;
+    margin: 0 auto;
     position: relative;
     width: 960px;
 }
 
-
-.wrapper > .post  {
+.wrapper > .post {
     margin: 5px 5px;
     float: left;
 }
 
+.wrapper > .post > .comments {
+    margin: 10px 0 0 0;
+}
+
 .wrapper > .post > .input-group {
-    margin-top: 10px;
+
 }
 

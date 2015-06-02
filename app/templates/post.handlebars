@@ -1,13 +1,7 @@
-<div class="post">
-    <img src="{{url}}" alt="" />
+<div class="post" id="{{ id }}">
+    <img src="{{ url }}" alt=""/>
 
-    {{#if comments}}
-        <ul>
-            {{#each comments}}
-                <li>{{this}}</li>
-            {{/each}}
-        </ul>
-    {{/if}} 
+    <div class="comments list-group"></div>
 
     <div class="input-group">
         <span class="input-group-addon">
