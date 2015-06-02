@@ -1,7 +1,3 @@
-* {
-    margin: 0;
-}
-
 .wrapper {
     background-color: #A8A8A8;
     margin: 0 auto;
@@ -17,8 +13,3 @@
 .wrapper > .post > .comments {
     margin: 10px 0 0 0;
 }
-
-.wrapper > .post > .input-group {
-
-}
-

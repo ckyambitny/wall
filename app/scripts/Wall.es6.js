@@ -1,14 +1,13 @@
 'use strict';
 
 import template from '../templates/post.handlebars';
-// var template = require('../templates/post.handlebars');
 
 class Wall {
     constructor() {
         let windowHeight = window.innerHeight;
         let imagesNumber = Math.floor(windowHeight / 210) + 1;
         this.wrapper = document.querySelector('.wrapper');
-        this.posts = [];
+
         // Add images to page.
         this.appendPosts(imagesNumber);
 
@@ -42,50 +41,60 @@ class Wall {
             throw new Error('$element is not exists');
         }
 
-        let input = $element.lastElementChild.lastElementChild;
+        let input = $element.querySelector('input');
         let comments = [];
 
         input.addEventListener('keypress', function (e) {
-            if (e.keyCode == '13') {
-                let comment = input.value.trim();
+            let comment = input.value.trim();
 
-                if (comment.length > 0) {
-                    // Add to list of comments.
-                    comments.push(comment);
+            if (Wall.isEnter(e) && comment.length > 0) {
+                // Add to list of comments.
+                comments.push(comment);
 
-                    // Clear input.
-                    input.value = '';
+                // Clear input.
+                input.value = '';
 
-                    let $div = document.createElement('div');
-                    $div.classList.add('list-group-item');
-                    $div.innerText = comment;
-                    $element.querySelector('.comments').appendChild($div);
-                }
+                let $div = document.createElement('div');
+                $div.classList.add('list-group-item');
+                $div.innerText = comment;
+                $element.querySelector('.comments').appendChild($div);
             }
         });
     }
 
     appendPost() {
-        console.log('appendPost');
-
         let u = 'http://placeskull.com/950/200';
         let url = u + '?' + Math.random();
         let id = 'id-' + this._uniqueId;
         let context = { id, url };
         this.wrapper.innerHTML += String(template(context));
 
-        requestAnimationFrame(() => {
+        // Number of milliseconds for timeout to waiting for post render.
+        const TIME_TO_RENDER = 300;
+
+        // Waiting for comment render.
+        setTimeout(() => {
             let $post = document.querySelector('#' + id);
             this.addListener($post);
-        });
+        }, TIME_TO_RENDER);
     }
 
+    /**
+     * Building unique identyfikator.
+     *
+     * @returns {number}
+     * @private
+     */
     get _uniqueId() {
         if (!this._uid) {
             this._uid = 0;
         }
 
         return ++this._uid;
+    }
+
+    static isEnter(e) {
+        return e.keyCode === 13;
     }
 }
 
