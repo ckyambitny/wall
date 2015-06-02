@@ -1,12 +1,18 @@
-<div>
-    <img src={{url}}>
+<div class="post">
+    <img src="{{url}}" alt="" />
+
     {{#if comments}}
         <ul>
-        {{#each comments}}
-            <li>{{this}}</li>
-        {{/each}}
+            {{#each comments}}
+                <li>{{this}}</li>
+            {{/each}}
         </ul>
     {{/if}} 
-    <input class="form-control" type="text name="comment">
+
+    <div class="input-group">
+        <span class="input-group-addon">
+            <span class="label label-warning">you</span>
+        </span>
+        <input type="text" class="form-control" placeholder="Comment">
+    </div>
 </div>
-    

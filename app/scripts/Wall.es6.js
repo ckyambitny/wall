@@ -1,7 +1,7 @@
 'use strict';
 
-//import template from '../templates/post.handlebars';
-var template = require('../templates/post.handlebars');
+import template from '../templates/post.handlebars';
+// var template = require('../templates/post.handlebars');
 
 class Wall {
     constructor() {
@@ -10,7 +10,7 @@ class Wall {
         this.wrapper = document.querySelector('.wrapper');
 
         // Add images to page.
-        this.appendImages(imagesNumber);
+        this.appendPosts(imagesNumber);
 
         // Listen for user scrolling down.
         window.addEventListener('scroll', (e) => {
@@ -24,15 +24,14 @@ class Wall {
             let diff = documentHeight - windowHeight;
 
             // When difference is equal current scroll size...
-           console.log(sY+' .......... ' + diff);
             if (sY === diff) {
                 // ... load next image.
                 this.appendPost();
             }
         });
     }
-    appendImages(number) {
-        console.log('appendImages', number);
+
+    appendPosts(number) {
         for (let i = 0; i < number; i++) {
             this.appendPost();
         } 
@@ -44,9 +43,7 @@ class Wall {
         let src = u + '?' + Math.random();
         let context = {url: src};
         let adding = template(context) + '';
-        //console.log(this.wrapper.innerHTML);
         this.wrapper.innerHTML += adding;
-        //debuger;
     }
 }
 

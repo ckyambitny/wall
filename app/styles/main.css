@@ -11,18 +11,12 @@
 }
 
 
-.wrapper > div  {
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top:5px;  
-    height: 234px;
-    width: 950px;
-    display: block;
-    background-color: #00A5FF;
+.wrapper > .post  {
+    margin: 5px 5px;
     float: left;
 }
 
-.wrapper input {
-    display: block;   
+.wrapper > .post > .input-group {
+    margin-top: 10px;
 }
 
