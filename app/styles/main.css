@@ -12,12 +12,17 @@
 
 
 .wrapper > div  {
-    margin-top: 5px;
     margin-left: 5px;
     margin-right: 5px;
-    margin-bottom: 5px;
-    height: 200px;
+    margin-top:5px;  
+    height: 234px;
     width: 950px;
+    display: block;
     background-color: #00A5FF;
     float: left;
 }
+
+.wrapper input {
+    display: block;   
+}
+

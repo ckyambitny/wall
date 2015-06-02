@@ -1,5 +1,8 @@
 'use strict';
 
+//import template from '../templates/post.handlebars';
+var template = require('../templates/post.handlebars');
+
 class Wall {
     constructor() {
         let windowHeight = window.innerHeight;
@@ -18,31 +21,32 @@ class Wall {
             let sY = window.scrollY;
 
             // Calculate difference between: document height and window height.
-            var diff = documentHeight - windowHeight;
+            let diff = documentHeight - windowHeight;
 
             // When difference is equal current scroll size...
+           console.log(sY+' .......... ' + diff);
             if (sY === diff) {
                 // ... load next image.
-                this.appendImage()
+                this.appendPost();
             }
         });
     }
     appendImages(number) {
         console.log('appendImages', number);
         for (let i = 0; i < number; i++) {
-            this.appendImage();
+            this.appendPost();
         } 
     }
 
-    appendImage() {
-        console.log('appendImage')
+    appendPost() {
+        console.log('appendPost');
         let u = 'http://placeskull.com/950/200';
-        let d = document.createElement('div');
         let src = u + '?' + Math.random();
-        let img = document.createElement('img');
-        img.src = src;
-        d.appendChild(img);
-        this.wrapper.appendChild(d);
+        let context = {url: src};
+        let adding = template(context) + '';
+        //console.log(this.wrapper.innerHTML);
+        this.wrapper.innerHTML += adding;
+        //debuger;
     }
 }
 
