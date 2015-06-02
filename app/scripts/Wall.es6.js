@@ -8,14 +8,14 @@ class Wall {
         let windowHeight = window.innerHeight;
         let imagesNumber = Math.floor(windowHeight / 210) + 1;
         this.wrapper = document.querySelector('.wrapper');
-
+        
         // Add images to page.
         this.appendPosts(imagesNumber);
 
         // Listen for user scrolling down.
         window.addEventListener('scroll', (e) => {
             // Update window height (could be change).
-            windowHeight = window.innerHeight;
+            windowHeight = window.innerHeight; 
 
             let documentHeight = document.documentElement.offsetHeight;
             let sY = window.scrollY;
@@ -37,13 +37,26 @@ class Wall {
         } 
     }
 
+    addListener(el) {
+        for (let i = 0; i < el.length ; i++ ) {
+            el[i].addEventListener('keypress', function (e) {
+                if ( e.keyCode == '13') {
+                    if ( el[i].value.trim().length > 0 ) {
+                        console.log(JSON.stringify(el[i].value.trim()));                   
+                    }   
+                }                    
+            });
+        }      
+    }    
     appendPost() {
         console.log('appendPost');
         let u = 'http://placeskull.com/950/200';
         let src = u + '?' + Math.random();
         let context = {url: src};
-        let adding = template(context) + '';
-        this.wrapper.innerHTML += adding;
+        let adding = template(context);// + '';
+        this.wrapper.innerHTML += '' +  adding;
+        let inputBox = document.querySelectorAll('.form-control');
+        this.addListener(inputBox);
     }
 }
 
