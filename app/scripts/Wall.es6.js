@@ -4,15 +4,18 @@ import template from '../templates/post.handlebars';
 
 class Wall {
     constructor() {
+        // Object with key (as post id) and value (as post object).
+        this.posts = {};
+
         let windowHeight = window.innerHeight;
         let imagesNumber = Math.floor(windowHeight / 210) + 1;
-        this.wrapper = document.querySelector('.wrapper');
+        this.$wrapper = document.querySelector('.wrapper');
 
         // Add images to page.
-        this.appendPosts(imagesNumber);
+        this.addPosts(imagesNumber);
 
         // Listen for user scrolling down.
-        window.addEventListener('scroll', (e) => {
+        window.addEventListener('scroll', () => {
             // Update window height (could be change).
             windowHeight = window.innerHeight;
 
@@ -25,72 +28,74 @@ class Wall {
             // When difference is equal current scroll size...
             if (sY === diff) {
                 // ... load next image.
-                this.appendPost();
+                this.addPost();
             }
         });
     }
 
-    appendPosts(number) {
+    addPosts(number) {
         for (let i = 0; i < number; i++) {
-            this.appendPost();
+            this.addPost();
         }
     }
 
-    addListener($element) {
-        if (!$element) {
-            throw new Error('$element is not exists');
-        }
+    addListener($post) {
+        let input = $post.querySelector('input');
 
-        let input = $element.querySelector('input');
-        let comments = [];
-
-        input.addEventListener('keypress', function (e) {
+        input.addEventListener('keypress', (e) => {
             let comment = input.value.trim();
 
             if (Wall.isEnter(e) && comment.length > 0) {
-                // Add to list of comments.
-                comments.push(comment);
-
                 // Clear input.
                 input.value = '';
 
-                let $div = document.createElement('div');
-                $div.classList.add('list-group-item');
-                $div.innerText = comment;
-                $element.querySelector('.comments').appendChild($div);
+                this.addComment($post, comment);
             }
         });
     }
 
-    appendPost() {
-        let u = 'http://placeskull.com/950/200';
-        let url = u + '?' + Math.random();
-        let id = 'id-' + this._uniqueId;
-        let context = { id, url };
-        this.wrapper.innerHTML += String(template(context));
+    addComment($post, comment) {
+        console.log('addComment: %s', comment);
 
-        // Number of milliseconds for timeout to waiting for post render.
-        const TIME_TO_RENDER = 300;
+        let $div = document.createElement('div');
+        $div.classList.add('list-group-item');
+        $div.innerText = comment;
+        $post.querySelector('.comments').appendChild($div);
 
-        // Waiting for comment render.
-        setTimeout(() => {
-            let $post = document.querySelector('#' + id);
-            this.addListener($post);
-        }, TIME_TO_RENDER);
+        // TODO: push new comment to comments list in post object.
+        // ...
+
+        // Save data to storage.
+        this.save();
     }
 
-    /**
-     * Building unique identyfikator.
-     *
-     * @returns {number}
-     * @private
-     */
-    get _uniqueId() {
-        if (!this._uid) {
-            this._uid = 0;
-        }
+    addPost() {
+        let u = 'http://placeskull.com/950/200';
+        var random = String(Math.random()).slice(2);
+        let url = u + '?' + random;
+        let id = 'id-' + random;
+        let context = { id, url };
 
-        return ++this._uid;
+        console.log('addPost id=%s', id);
+
+        // Render
+        let $fragment = document.createElement('div');
+        $fragment.innerHTML = String(template(context));
+        this.$wrapper.appendChild($fragment.firstChild);
+
+        // Catch rendered Node.
+        let $post = document.querySelector('#' + id);
+        this.addListener($post);
+
+        // TODO: save post object to `this.posts`.
+        // ...
+
+        // Save data to storage.
+        this.save();
+    }
+
+    save() {
+        // TODO: Save `this.posts` to localStorage.
     }
 
     static isEnter(e) {

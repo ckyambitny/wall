@@ -10,6 +10,11 @@
     float: left;
 }
 
+.wrapper > .post > img {
+    width: 960px;
+    height: 200px;
+}
+
 .wrapper > .post > .comments {
     margin: 10px 0 0 0;
 }
