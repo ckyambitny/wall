@@ -62,30 +62,19 @@ class Wall {
         $div.innerText = comment;
         $post.querySelector('.comments').appendChild($div);
 
-        // TODO: push new comment to comments list in post object.
-        // get id of $post were adding comment
+        // TODO: push new comment to comments list in post object. DONE
         let $id = $post.id;
-        //debug CL
-        //console.log($id);
-        //console.log(this.posts[$id]);//Great return :D!!!!!
-         
-        //change value of given id in this,posts by adding new comment to comment list
         this.posts[$id].commentList.push(comment);
-
-        // just to be sure were saving ok console log all commentList for given post when comment added    
-        console.log(this.posts[$id].commentList);
-        // Save data to storage.
         this.save();
     }
 
     addPost() {
         let u = 'http://placeskull.com/950/200';
-        var random = String(Math.random()).slice(2);//why not let?
+        var random = String(Math.random()).slice(2); //ASK/FIND why not let?
         let url = u + '?' + random;
-        let id = 'id-' + random;//this probably should be $id, but handlebars etc.
-        let context = { id, url };
-        //ASK %s C type console log
-        //console.log('addPost id=%s', id);
+        let $id = 'id-' + random; 
+        let context = { $id, url };
+        //Find out why %s C type console log
 
         // Render
         let $fragment = document.createElement('div');
@@ -93,21 +82,13 @@ class Wall {
         this.$wrapper.appendChild($fragment.firstChild);
 
         // Catch rendered Node.
-        let $post = document.querySelector('#' + id);
+        let $post = document.querySelector('#' +$id);
         this.addListener($post);
 
         // TODO: save post object to `this.posts`.
         let commentList = [];
-        //debug addings
-        //commentList.push('LOL');
-        //commentList.push('Ajwaj');
-        //console.log(id);
-        //adding debug LOL, Ajwaj comments to list to console log it out
-        this.posts[id] = { commentList, url };// not this.posts.id - easy to mix up with let id 8X line
-        //debug log
-        //console.log(this.posts.id);
-        //console.log(this.posts.id.commentList[1]);//returning great:D
-
+        this.posts[$id] = { commentList, url };
+       
         // Save data to storage.
         this.save();
     }
