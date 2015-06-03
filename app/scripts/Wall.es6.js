@@ -62,9 +62,9 @@ class Wall {
         $div.innerText = comment;
         $post.querySelector('.comments').appendChild($div);
 
-        // TODO: push new comment to comments list in post object. DONE
-        let $id = $post.id;
-        this.posts[$id].commentList.push(comment);
+        // Push new comment to comments list in post object. DONE
+        let id = $post.id;
+        this.posts[id].commentList.push(comment);
         this.save();
     }
 
@@ -72,9 +72,8 @@ class Wall {
         let u = 'http://placeskull.com/950/200';
         var random = String(Math.random()).slice(2); //ASK/FIND why not let?
         let url = u + '?' + random;
-        let $id = 'id-' + random; 
-        let context = { $id, url };
-        //Find out why %s C type console log
+        let id = 'id-' + random; 
+        let context = { id, url };
 
         // Render
         let $fragment = document.createElement('div');
@@ -82,19 +81,19 @@ class Wall {
         this.$wrapper.appendChild($fragment.firstChild);
 
         // Catch rendered Node.
-        let $post = document.querySelector('#' +$id);
+        let $post = document.querySelector('#' + id);
         this.addListener($post);
 
-        // TODO: save post object to `this.posts`.
+        // Save post object to `this.posts`.
         let commentList = [];
-        this.posts[$id] = { commentList, url };
+        this.posts[id] = { commentList, url };
        
         // Save data to storage.
         this.save();
     }
 
     save() {
-        // TODO: Save `this.posts` to localStorage.
+        // Save `this.posts` to localStorage.
         localStorage.setItem('posts', JSON.stringify(this.posts));
     }
 
