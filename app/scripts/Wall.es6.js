@@ -5,18 +5,19 @@ import template from '../templates/post.handlebars';
 
 class Wall {
     constructor() {
+        this.$wrapper = document.querySelector('.wrapper');
+
         // Object with key (as post id) and value (as post object).
         this.posts = Utils.getLocalStorage('posts') || {}; 
         // checking if posts is empty (if we have any data to process )
         // przydalaby sie metoda render odpowiadajaca tylko za podpinanie do dom bez dodawania do LS spowrotem tego co odczytaliśmy
         
         //
-        Utils.isObjEmpty(this.posts) ? console.log('emptyLs') : console.log(this.posts);
+        Utils.isObjEmpty(this.posts) ? this.fakePosts() : console.log(this.posts);// :loadPosts(this.posts);
         //Utils.isObjEmpty(this.posts) ? renderBezDanych() : renderDanymiNaWejsciu);
         
-        this.$wrapper = document.querySelector('.wrapper');
-        // Add images to page.
-        this.fakePosts();
+                // Add images to page.
+        //this.fakePosts();
 
         // Listen for user scrolling down.
         window.addEventListener('scroll', () => {
@@ -36,7 +37,11 @@ class Wall {
             }
         });
     }
-    
+   
+    loadPosts() {
+         
+
+    }    
    
     fakePosts() {
         let windowHeight = window.innerHeight;
