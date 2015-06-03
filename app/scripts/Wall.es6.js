@@ -61,12 +61,11 @@ class Wall {
 
     addComment($post, comment) {
         console.log('addComment: %s', comment);
-
+        let time = new Date();
         let $div = document.createElement('div');
         $div.classList.add('list-group-item');
-        $div.innerText = comment;
+        $div.innerText = time + ':' + comment;
         $post.querySelector('.comments').appendChild($div);
-
         // Push new comment to comments list in post object. DONE
         let id = $post.id;
         this.posts[id].commentList.push(comment);
