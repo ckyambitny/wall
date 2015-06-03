@@ -2,3 +2,4 @@
 /app/dist/
 *.orig
 /.divshot-cache/
+npm-debug.log
