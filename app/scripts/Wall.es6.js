@@ -1,24 +1,25 @@
 'use strict';
 
+import Utils from './Utils.es6';
 import template from '../templates/post.handlebars';
 
 class Wall {
     constructor() {
         // Object with key (as post id) and value (as post object).
-        this.posts = Wall.getLocalStorage('posts') || {}; 
+        this.posts = Utils.getLocalStorage('posts') || {}; 
         // checking if posts is empty (if we have any data to process )
         // przydalaby sie metoda render odpowiadajaca tylko za podpinanie do dom bez dodawania do LS spowrotem tego co odczytaliśmy
         
         //
-        Wall.isObjEmpty(this.posts) ? console.log('emptyLs') : console.log(this.posts);
-        //Wall.isObjEmpty(this.posts) ? renderBezDanych() : renderDanymiNaWejsciu);
+        Utils.isObjEmpty(this.posts) ? console.log('emptyLs') : console.log(this.posts);
+        //Utils.isObjEmpty(this.posts) ? renderBezDanych() : renderDanymiNaWejsciu);
         
         let windowHeight = window.innerHeight;
-        let imagesNumber = Math.floor(windowHeight / 210) + 1;
         this.$wrapper = document.querySelector('.wrapper');
 
+        let imagesNumber = Math.floor(windowHeight / 210) + 1;
         // Add images to page.
-        this.addPosts(imagesNumber);
+        this.buildPosts(imagesNumber);
 
         // Listen for user scrolling down.
         window.addEventListener('scroll', () => {
@@ -39,24 +40,8 @@ class Wall {
         });
     }
     
-    static isObjEmpty(obj) {
-        return Object.getOwnPropertyNames(obj).length === 0;
-    }
-    // returns LS object by key, if no obj returns empty obj
-    static getLocalStorage(key) {
-        //TODO: check if localStorage has key, if true returns JSONparsed posts object, else return false(to use in = X || Y in constructor)
-        let post;
-        try {
-            post = JSON.parse(localStorage.getItem(key));
-        }
-        catch (e) {
-            console.log(e);
-            post = false;
-        }        
-        return post;     
-    }
-
-    addPosts(number) {
+   
+    buildPosts(number) {
         for (let i = 0; i < number; i++) {
             this.addPost();
         }
@@ -73,7 +58,7 @@ class Wall {
         input.addEventListener('keypress', (e) => {
             let comment = input.value.trim();
 
-            if (Wall.isEnter(e) && comment.length > 0) {
+            if (Utils.isEnter(e) && comment.length > 0) {
                 // Clear input.
                 input.value = '';
 
@@ -87,7 +72,7 @@ class Wall {
         let time = new Date();
         let $div = document.createElement('div');
         $div.classList.add('list-group-item');
-        $div.innerText = Wall.formatDate(time) + ' : ' +  comment;
+        $div.innerText = Utils.formatDate(time) + ' : ' +  comment;
         $post.querySelector('.comments').appendChild($div);
         // Push new comment to comments list in post object. DONE
         let id = $post.id;
@@ -126,17 +111,6 @@ class Wall {
         localStorage.setItem('posts', JSON.stringify(this.posts));
     }
     
-    static formatNumber(num) {
-        return num < 10 ? '0' + num : num;        
-    }
-
-    static formatDate(date) {
-        return Wall.formatNumber(date.getHours()) + ':' + Wall.formatNumber(date.getMinutes()) + ':' + Wall.formatNumber(date.getSeconds());
-    }
-
-    static isEnter(e) {
-        return e.keyCode === 13;
-    }
-}
+   }
 
 module.exports = Wall;
