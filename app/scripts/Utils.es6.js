@@ -5,16 +5,23 @@ class Utils {
         return Object.getOwnPropertyNames(obj).length === 0;
     }
 
-    // returns LS object by key, if no obj returns empty obj
+    /**
+     * Returns LS object by key, if no obj returns empty obj.
+     *
+     * @param {string} key
+     * @returns {*}
+     */
     static getLocalStorage(key) {
         let post;
+        let data = localStorage.getItem(key);
+
         try {
-            post = JSON.parse(localStorage.getItem(key));
+            post = JSON.parse(data);
+        } catch (e) {
+            console.error(e);
+            post = null;
         }
-        catch (e) {
-            console.log(e);
-            post = false;
-        }
+
         return post;
     }
 
@@ -23,7 +30,11 @@ class Utils {
     }
 
     static formatDate(date) {
-        return Utils.formatNumber(date.getHours()) + ':' + Utils.formatNumber(date.getMinutes()) + ':' + Utils.formatNumber(date.getSeconds());
+        var hours = Utils.formatNumber(date.getHours());
+        var minutes = Utils.formatNumber(date.getMinutes());
+        var seconds = Utils.formatNumber(date.getSeconds());
+
+        return hours + ':' + minutes + ':' + seconds;
     }
 
     static isEnter(e) {

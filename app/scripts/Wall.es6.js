@@ -12,8 +12,6 @@ class Wall {
 
         // Add images to page if we cant process localStorage or empty, otherwise load saved posts and comments
         Utils.isObjEmpty(this.posts) ? this.fakePosts() : this.loadPosts(this.posts);
-        //Utils.isObjEmpty(this.posts) ? renderBezDanych() : renderDanymiNaWejsciu);
-
 
         // Listen for user scrolling down.
         window.addEventListener('scroll', () => {
@@ -36,15 +34,19 @@ class Wall {
 
     loadPosts(data) {
         for (let i in data) {
-            let url = data[i].url;
-            let id = i;
-            this.addPost(url, id);
-            let commentList = data[i].commentList;
-            let $post = document.querySelector('#' + id);
-            for (let j = 0, k = commentList.length; j < k; j++) {
-                let body = commentList[j].body;
-                let time = commentList[j].time;
-                this.addComment($post, body, time);
+            if (data.hasOwnProperty(i)) {
+                let url = data[i].url;
+                let id = i;
+                this.addPost(url, id);
+
+                let commentList = data[i].commentList;
+                let $post = document.querySelector('#' + id);
+
+                for (let j = 0, k = commentList.length; j < k; j++) {
+                    let body = commentList[j].body;
+                    let time = commentList[j].time;
+                    this.addComment($post, body, time);
+                }
             }
         }
     }
@@ -52,19 +54,21 @@ class Wall {
     fakePosts() {
         let windowHeight = window.innerHeight;
         let imagesNumber = Math.floor(windowHeight / 210) + 1;
+
         for (let i = 0; i < imagesNumber; i++) {
             this.addPost();
         }
     }
 
     addListener($post) {
-        let input = $post.querySelector('input');
         let time = new Date(Number($post.dataset.time));
 
         let img = $post.querySelector('img');
-        img.addEventListener('click', (e) => {
+        img.addEventListener('click', () => {
             alert(time);
         });
+
+        let input = $post.querySelector('input');
         input.addEventListener('keypress', (e) => {
             let comment = input.value.trim();
             if (Utils.isEnter(e) && comment.length > 0) {
@@ -80,14 +84,15 @@ class Wall {
         let time = loadedTime || new Date();
         let $div = document.createElement('div');
         $div.classList.add('list-group-item');
+
         if (!loadedTime) {
             time = Utils.formatDate(time);
-            $div.innerText = time + ' : ' + body;
-        } else {
-            $div.innerText = time + ' : ' + body;
         }
 
+        $div.innerText = time + ' : ' + body;
+
         $post.querySelector('.comments').appendChild($div);
+
         // Push new comment to comments list in post object. DONE
         if (!loadedTime) {
             let id = $post.id;
@@ -97,10 +102,9 @@ class Wall {
         }
     }
 
-
     addPost(...args) {
         let u = 'http://placeskull.com/950/200';
-        let random = String(Math.random()).slice(2); //ASK/FIND why not let?
+        let random = String(Math.random()).slice(2);
         let url = args[0] || u + '?' + random;
         let id = args[1] || 'id-' + random;
         let time = Date.now();
@@ -126,7 +130,6 @@ class Wall {
             this.save();
         }
     }
-
 
     save() {
         // Save `this.posts` to localStorage.
