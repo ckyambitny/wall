@@ -9,15 +9,11 @@ class Wall {
 
         // Object with key (as post id) and value (as post object).
         this.posts = Utils.getLocalStorage('posts') || {}; 
-        // checking if posts is empty (if we have any data to process )
-        // przydalaby sie metoda render odpowiadajaca tylko za podpinanie do dom bez dodawania do LS spowrotem tego co odczytaliśmy
         
-        //
-        Utils.isObjEmpty(this.posts) ? this.fakePosts() : console.log(this.posts);// :loadPosts(this.posts);
+        // Add images to page if we cant process localStorage or empty, otherwise load saved posts and comments
+        Utils.isObjEmpty(this.posts) ? this.fakePosts() : this.loadPosts(this.posts);
         //Utils.isObjEmpty(this.posts) ? renderBezDanych() : renderDanymiNaWejsciu);
         
-                // Add images to page.
-        //this.fakePosts();
 
         // Listen for user scrolling down.
         window.addEventListener('scroll', () => {
@@ -38,8 +34,30 @@ class Wall {
         });
     }
    
-    loadPosts() {
-         
+    loadPosts(data) {
+        for (let i in data) {
+            //console.log(data[i]);               
+            let url = data[i].url;
+            let id = i;
+            //console.log(id);
+            // fake not loaded time, just for context to work
+            let time = Date.now();  
+            let context = { id, url, time };
+            let $fragment = document.createElement('div');
+            $fragment.innerHTML = String(template(context));
+            this.$wrapper.appendChild($fragment.firstChild);
+
+            // Catch rendered Node.
+            let $post = document.querySelector('#' + id);
+            this.addListener($post);
+            let commentList = data[i].commentList;
+            
+            for (let j = 0, k = commentList.length; j < k; j++ ) {
+                let body = commentList[j].body;
+                let time = commentList[j].time;
+                this.addComment($post, body, time); 
+            } 
+        }
 
     }    
    
@@ -61,27 +79,34 @@ class Wall {
         });
         input.addEventListener('keypress', (e) => {
             let comment = input.value.trim();
-
             if (Utils.isEnter(e) && comment.length > 0) {
                 // Clear input.
                 input.value = '';
-
                 this.addComment($post, comment);
             }
         });
     }
 
-    addComment($post, comment) {
+    addComment($post, body, czas) {
         //console.log('addComment: %s', comment);
-        let time = new Date();
+        let time = czas || new Date();
         let $div = document.createElement('div');
         $div.classList.add('list-group-item');
-        $div.innerText = Utils.formatDate(time) + ' : ' +  comment;
+        if ( !czas ) {
+            time = Utils.formatDate(time); 
+            $div.innerText = time + ' : ' +  body;
+        } else {
+             $div.innerText = time + ' : ' +  body;
+        }        
+
         $post.querySelector('.comments').appendChild($div);
         // Push new comment to comments list in post object. DONE
-        let id = $post.id;
-        this.posts[id].commentList.push(comment);
-        this.save();
+        if( !czas ) {
+            let id = $post.id;
+            let  comment = {body, time};
+            this.posts[id].commentList.push(comment);
+            this.save();
+        }
     }
     
 
