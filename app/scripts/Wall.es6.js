@@ -5,8 +5,14 @@ import template from '../templates/post.handlebars';
 class Wall {
     constructor() {
         // Object with key (as post id) and value (as post object).
-        this.posts = {}; 
-
+        this.posts = Wall.getLocalStorage('posts') || {}; 
+        // checking if posts is empty (if we have any data to process )
+        // przydalaby sie metoda render odpowiadajaca tylko za podpinanie do dom bez dodawania do LS spowrotem tego co odczytaliśmy
+        
+        //
+        Wall.isObjEmpty(this.posts) ? console.log('emptyLs') : console.log(this.posts);
+        //Wall.isObjEmpty(this.posts) ? renderBezDanych() : renderDanymiNaWejsciu);
+        
         let windowHeight = window.innerHeight;
         let imagesNumber = Math.floor(windowHeight / 210) + 1;
         this.$wrapper = document.querySelector('.wrapper');
@@ -31,6 +37,16 @@ class Wall {
                 this.addPost();
             }
         });
+    }
+    
+    static isObjEmpty(obj) {
+        return Object.getOwnPropertyNames(obj).length > 0 ? false : true;
+    }
+    // returns LS object by key, if no obj returns empty obj
+    static getLocalStorage(key) {
+        //TODO: check if localStorage has key, if true returns JSONparsed posts object, else return false(to use in = X || Y in constructor)
+        return JSON.parse(localStorage.getItem(key)) || false;
+        
     }
 
     addPosts(number) {
@@ -64,13 +80,14 @@ class Wall {
         let time = new Date();
         let $div = document.createElement('div');
         $div.classList.add('list-group-item');
-        $div.innerText = time + ':' + comment;
+        $div.innerText = Wall.formatDate(time) + ' : ' +  comment;
         $post.querySelector('.comments').appendChild($div);
         // Push new comment to comments list in post object. DONE
         let id = $post.id;
         this.posts[id].commentList.push(comment);
         this.save();
     }
+    
 
     addPost() {
         let u = 'http://placeskull.com/950/200';
@@ -100,6 +117,13 @@ class Wall {
     save() {
         // Save `this.posts` to localStorage.
         localStorage.setItem('posts', JSON.stringify(this.posts));
+    }
+
+    static formatDate(date) {
+        let hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();  
+        let minutes = date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes();  
+        let seconds = date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds();
+        return hours + ':' + minutes +  ':' + seconds ;
     }
 
     static isEnter(e) {
