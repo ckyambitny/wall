@@ -14,11 +14,10 @@ class Wall {
         Utils.isObjEmpty(this.posts) ? console.log('emptyLs') : console.log(this.posts);
         //Utils.isObjEmpty(this.posts) ? renderBezDanych() : renderDanymiNaWejsciu);
         
-        let windowHeight = window.innerHeight;
         this.$wrapper = document.querySelector('.wrapper');
-
-        let imagesNumber = Math.floor(windowHeight / 210) + 1;
         // Add images to page.
+        let windowHeight = window.innerHeight;
+        let imagesNumber = Math.floor(windowHeight / 210) + 1;
         this.buildPosts(imagesNumber);
 
         // Listen for user scrolling down.
