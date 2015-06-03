@@ -40,13 +40,20 @@ class Wall {
     }
     
     static isObjEmpty(obj) {
-        return Object.getOwnPropertyNames(obj).length > 0 ? false : true;
+        return Object.getOwnPropertyNames(obj).length === 0;
     }
     // returns LS object by key, if no obj returns empty obj
     static getLocalStorage(key) {
         //TODO: check if localStorage has key, if true returns JSONparsed posts object, else return false(to use in = X || Y in constructor)
-        return JSON.parse(localStorage.getItem(key)) || false;
-        
+        let post;
+        try {
+            post = JSON.parse(localStorage.getItem(key));
+        }
+        catch (e) {
+            console.log(e);
+            post = false;
+        }        
+        return post;     
     }
 
     addPosts(number) {
@@ -118,12 +125,13 @@ class Wall {
         // Save `this.posts` to localStorage.
         localStorage.setItem('posts', JSON.stringify(this.posts));
     }
+    
+    static formatNumber(num) {
+        return num < 10 ? '0' + num : num;        
+    }
 
     static formatDate(date) {
-        let hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();  
-        let minutes = date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes();  
-        let seconds = date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds();
-        return hours + ':' + minutes +  ':' + seconds ;
+        return Wall.formatNumber(date.getHours()) + ':' + Wall.formatNumber(date.getMinutes()) + ':' + Wall.formatNumber(date.getSeconds());
     }
 
     static isEnter(e) {
