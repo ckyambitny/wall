@@ -16,14 +16,12 @@ class Wall {
         
         this.$wrapper = document.querySelector('.wrapper');
         // Add images to page.
-        let windowHeight = window.innerHeight;
-        let imagesNumber = Math.floor(windowHeight / 210) + 1;
-        this.buildPosts(imagesNumber);
+        this.fakePosts();
 
         // Listen for user scrolling down.
         window.addEventListener('scroll', () => {
             // Update window height (could be change).
-            windowHeight = window.innerHeight;
+            let windowHeight = window.innerHeight;
 
             let documentHeight = document.documentElement.offsetHeight;
             let sY = window.scrollY;
@@ -40,8 +38,10 @@ class Wall {
     }
     
    
-    buildPosts(number) {
-        for (let i = 0; i < number; i++) {
+    fakePosts() {
+        let windowHeight = window.innerHeight;
+        let imagesNumber = Math.floor(windowHeight / 210) + 1;
+        for (let i = 0; i < imagesNumber; i++) {
             this.addPost();
         }
     }
@@ -67,7 +67,7 @@ class Wall {
     }
 
     addComment($post, comment) {
-        console.log('addComment: %s', comment);
+        //console.log('addComment: %s', comment);
         let time = new Date();
         let $div = document.createElement('div');
         $div.classList.add('list-group-item');
