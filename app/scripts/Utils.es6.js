@@ -4,20 +4,22 @@ class Utils {
     static isObjEmpty(obj) {
         return Object.getOwnPropertyNames(obj).length === 0;
     }
+
     // returns LS object by key, if no obj returns empty obj
     static getLocalStorage(key) {
-        let post;       
+        let post;
         try {
             post = JSON.parse(localStorage.getItem(key));
         }
         catch (e) {
             console.log(e);
             post = false;
-        }        
-        return post;     
+        }
+        return post;
     }
-     static formatNumber(num) {
-        return num < 10 ? '0' + num : num;        
+
+    static formatNumber(num) {
+        return num < 10 ? '0' + num : num;
     }
 
     static formatDate(date) {

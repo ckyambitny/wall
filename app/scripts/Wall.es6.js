@@ -8,12 +8,12 @@ class Wall {
         this.$wrapper = document.querySelector('.wrapper');
 
         // Object with key (as post id) and value (as post object).
-        this.posts = Utils.getLocalStorage('posts') || {}; 
-        
+        this.posts = Utils.getLocalStorage('posts') || {};
+
         // Add images to page if we cant process localStorage or empty, otherwise load saved posts and comments
         Utils.isObjEmpty(this.posts) ? this.fakePosts() : this.loadPosts(this.posts);
         //Utils.isObjEmpty(this.posts) ? renderBezDanych() : renderDanymiNaWejsciu);
-        
+
 
         // Listen for user scrolling down.
         window.addEventListener('scroll', () => {
@@ -33,22 +33,22 @@ class Wall {
             }
         });
     }
-   
+
     loadPosts(data) {
         for (let i in data) {
             let url = data[i].url;
             let id = i;
-            this.addPost(url, id);            
+            this.addPost(url, id);
             let commentList = data[i].commentList;
             let $post = document.querySelector('#' + id);
-            for (let j = 0, k = commentList.length; j < k; j++ ) {
+            for (let j = 0, k = commentList.length; j < k; j++) {
                 let body = commentList[j].body;
                 let time = commentList[j].time;
-                this.addComment($post, body, time); 
-            } 
+                this.addComment($post, body, time);
+            }
         }
-    }    
-   
+    }
+
     fakePosts() {
         let windowHeight = window.innerHeight;
         let imagesNumber = Math.floor(windowHeight / 210) + 1;
@@ -59,8 +59,8 @@ class Wall {
 
     addListener($post) {
         let input = $post.querySelector('input');
-        let time =  new Date(Number($post.dataset.time));
-        
+        let time = new Date(Number($post.dataset.time));
+
         let img = $post.querySelector('img');
         img.addEventListener('click', (e) => {
             alert(time);
@@ -80,29 +80,29 @@ class Wall {
         let time = loadedTime || new Date();
         let $div = document.createElement('div');
         $div.classList.add('list-group-item');
-        if ( !loadedTime ) {
-            time = Utils.formatDate(time); 
-            $div.innerText = time + ' : ' +  body;
+        if (!loadedTime) {
+            time = Utils.formatDate(time);
+            $div.innerText = time + ' : ' + body;
         } else {
-             $div.innerText = time + ' : ' +  body;
-        }        
+            $div.innerText = time + ' : ' + body;
+        }
 
         $post.querySelector('.comments').appendChild($div);
         // Push new comment to comments list in post object. DONE
-        if( !loadedTime ) {
+        if (!loadedTime) {
             let id = $post.id;
-            let  comment = {body, time};
+            let comment = { body, time };
             this.posts[id].commentList.push(comment);
             this.save();
         }
     }
-    
+
 
     addPost(...args) {
         let u = 'http://placeskull.com/950/200';
         let random = String(Math.random()).slice(2); //ASK/FIND why not let?
         let url = args[0] || u + '?' + random;
-        let id = args[1] || 'id-' + random; 
+        let id = args[1] || 'id-' + random;
         let time = Date.now();
         let context = { id, url, time };
 
@@ -114,14 +114,14 @@ class Wall {
         // Catch rendered Node.
         let $post = document.querySelector('#' + id);
         this.addListener($post);
-        
+
         //save data only when its new data
-        if( args.length === 0 ) { 
-            
+        if (args.length === 0) {
+
             // Save post object to `this.posts`.
             let commentList = [];
             this.posts[id] = { commentList, url };
-       
+
             // Save data to storage.
             this.save();
         }
@@ -132,7 +132,7 @@ class Wall {
         // Save `this.posts` to localStorage.
         localStorage.setItem('posts', JSON.stringify(this.posts));
     }
-    
-   }
+
+}
 
 module.exports = Wall;
