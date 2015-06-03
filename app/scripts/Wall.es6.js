@@ -36,29 +36,17 @@ class Wall {
    
     loadPosts(data) {
         for (let i in data) {
-            //console.log(data[i]);               
             let url = data[i].url;
             let id = i;
-            //console.log(id);
-            // fake not loaded time, just for context to work
-            let time = Date.now();  
-            let context = { id, url, time };
-            let $fragment = document.createElement('div');
-            $fragment.innerHTML = String(template(context));
-            this.$wrapper.appendChild($fragment.firstChild);
-
-            // Catch rendered Node.
-            let $post = document.querySelector('#' + id);
-            this.addListener($post);
+            this.addPost(url, id);            
             let commentList = data[i].commentList;
-            
+            let $post = document.querySelector('#' + id);
             for (let j = 0, k = commentList.length; j < k; j++ ) {
                 let body = commentList[j].body;
                 let time = commentList[j].time;
                 this.addComment($post, body, time); 
             } 
         }
-
     }    
    
     fakePosts() {
@@ -87,12 +75,12 @@ class Wall {
         });
     }
 
-    addComment($post, body, czas) {
+    addComment($post, body, loadedTime) {
         //console.log('addComment: %s', comment);
-        let time = czas || new Date();
+        let time = loadedTime || new Date();
         let $div = document.createElement('div');
         $div.classList.add('list-group-item');
-        if ( !czas ) {
+        if ( !loadedTime ) {
             time = Utils.formatDate(time); 
             $div.innerText = time + ' : ' +  body;
         } else {
@@ -101,7 +89,7 @@ class Wall {
 
         $post.querySelector('.comments').appendChild($div);
         // Push new comment to comments list in post object. DONE
-        if( !czas ) {
+        if( !loadedTime ) {
             let id = $post.id;
             let  comment = {body, time};
             this.posts[id].commentList.push(comment);
@@ -110,11 +98,11 @@ class Wall {
     }
     
 
-    addPost() {
+    addPost(...args) {
         let u = 'http://placeskull.com/950/200';
         let random = String(Math.random()).slice(2); //ASK/FIND why not let?
-        let url = u + '?' + random;
-        let id = 'id-' + random; 
+        let url = args[0] || u + '?' + random;
+        let id = args[1] || 'id-' + random; 
         let time = Date.now();
         let context = { id, url, time };
 
@@ -127,13 +115,18 @@ class Wall {
         let $post = document.querySelector('#' + id);
         this.addListener($post);
         
-        // Save post object to `this.posts`.
-        let commentList = [];
-        this.posts[id] = { commentList, url };
+        //save data only when its new data
+        if( args.length === 0 ) { 
+            
+            // Save post object to `this.posts`.
+            let commentList = [];
+            this.posts[id] = { commentList, url };
        
-        // Save data to storage.
-        this.save();
+            // Save data to storage.
+            this.save();
+        }
     }
+
 
     save() {
         // Save `this.posts` to localStorage.
