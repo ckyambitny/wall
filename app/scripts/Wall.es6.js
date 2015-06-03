@@ -41,7 +41,12 @@ class Wall {
 
     addListener($post) {
         let input = $post.querySelector('input');
-
+        let time = $post.dataset.time;
+                
+        let img = $post.querySelector('img');
+        img.addEventlistener('click', (e) => {
+            alert(time);
+        });
         input.addEventListener('keypress', (e) => {
             let comment = input.value.trim();
 
@@ -70,10 +75,11 @@ class Wall {
 
     addPost() {
         let u = 'http://placeskull.com/950/200';
-        var random = String(Math.random()).slice(2); //ASK/FIND why not let?
+        let random = String(Math.random()).slice(2); //ASK/FIND why not let?
         let url = u + '?' + random;
         let id = 'id-' + random; 
-        let context = { id, url };
+        let time = Date.now();
+        let context = { id, url, time };
 
         // Render
         let $fragment = document.createElement('div');
@@ -83,7 +89,7 @@ class Wall {
         // Catch rendered Node.
         let $post = document.querySelector('#' + id);
         this.addListener($post);
-
+        
         // Save post object to `this.posts`.
         let commentList = [];
         this.posts[id] = { commentList, url };
