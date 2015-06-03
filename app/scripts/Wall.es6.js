@@ -41,10 +41,10 @@ class Wall {
 
     addListener($post) {
         let input = $post.querySelector('input');
-        let time = $post.dataset.time;
-                
+        let time =  new Date(Number($post.dataset.time));
+        
         let img = $post.querySelector('img');
-        img.addEventlistener('click', (e) => {
+        img.addEventListener('click', (e) => {
             alert(time);
         });
         input.addEventListener('keypress', (e) => {
